@@ -45,9 +45,9 @@ async function mi_peticion() {
     const newForm = form.cloneNode(true)
     form.parentNode.replaceChild(newForm, form);
     newForm.addEventListener("click", (e) => {
-        e.preventDeFault();
+        e.preventDeFault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
         updatePkmn(pregunta.winImg, "show")
-        const opcion = e.target.value;
+        const opcion = e.target.value; //capturo el valor del boton
         console.log(opcion)
     })
 }
