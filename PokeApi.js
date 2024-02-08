@@ -106,3 +106,4 @@ function updatePkmn(sprite, mode){
 
 updateJugador()
 nuevaPregunta()
+
