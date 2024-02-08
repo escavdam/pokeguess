@@ -10,17 +10,24 @@
     <div class="title">
         <h1>PokeGuess</h1>
     </div>
-
-    <section class="container section1">
+    <main>  
+        
+        <section id="jugador">
+            <div id="vidas">0</div>
+            <div id="aciertos">0</div>
+            <div id="fallos">0</div>
+        </section>
+        <section class="container">
             <img id="imgPokemon" src="" class="">
-            <h2>¿Que pokemon es?</h2>
-        <form id="form-jugador" class="grid">
-            <input type="submit"  id="btnObtenerPokemon">
-            <input type="submit"  id="btnObtenerPokemon1">
-            <input type="submit"  id="btnObtenerPokemon2">
-            <input type="submit"  id="btnObtenerPokemon3">
-        </form>
-    </section>
+            <h2 id="mensaje">¿Que pokemon es?</h2>
+            <form id="form-jugador" class="grid">
+                <input type="submit"  id="btnObtenerPokemon">
+                <input type="submit"  id="btnObtenerPokemon1">
+                <input type="submit"  id="btnObtenerPokemon2">
+                <input type="submit"  id="btnObtenerPokemon3">
+            </form>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
