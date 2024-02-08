@@ -1,58 +1,89 @@
-async function getPkmn(numero) {
-    const url = `https://pokeapi.co/api/v2/pokemon/${numero}`;
+async function getPkmn() {
+    const id = Math.floor(Math.random() * 751) + 1;
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const respuesta = await fetch(url);
     const datos = await respuesta.json();
-    return datos;
-}
 
-function generarNumeroAleatorio() {
-    return Math.floor(Math.random() * 999) + 1;
-}
+    const { name, sprites } = datos;
+    const { front_default } = sprites;
 
-async function mi_peticion() {
-    const imagenDesenfocada = document.querySelector('#imagenDesenfocada');
-    imagenDesenfocada.classList.remove('hidden');
-
-    const numeroAleatorio = generarNumeroAleatorio();
-    const numeroAleatorio1 = generarNumeroAleatorio();
-    const numeroAleatorio2 = generarNumeroAleatorio();
-    const numeroAleatorio3 = generarNumeroAleatorio();
-
-    const pkmn = await getPkmn(numeroAleatorio);
-    const pkmn1 = await getPkmn(numeroAleatorio1);
-    const pkmn2 = await getPkmn(numeroAleatorio2);
-    const pkmn3 = await getPkmn(numeroAleatorio3);
-
-    const { front_default } = pkmn.sprites;
-    const urlImagenFrontal = front_default;
-
-    const imgPokemon = document.querySelector("#imgPokemon");
-    imgPokemon.src = urlImagenFrontal;
-
-    imagenDesenfocada.classList.add('hidden');
-
-    mostrarNombrePokemon(nombrePokemon, nombrePokemon1, nombrePokemon2, nombrePokemon3);
-
-    const opciones = {
-        win: pkmn.name,
-        lose1: pkmn1.name,
-        lose2: pkmn2.name,
-        lose3: pkmn3.name
+    const info = {
+        nombre: name,
+        imagen: front_default
     };
 
-    updateOpciones(opciones);
+    return info;
+}
 
-    const newForm = form.cloneNode(true)
-    form.parentNode.replaceChild(newForm, form);
+async function nuevaPregunta(){
+    const pkmn = await getPkmn();
+    const pkmn2 = await getPkmn();
+    const pkmn3 = await getPkmn();
+    const pkmn4 = await getPkmn();
+    document.querySelector('#mensaje').innerHTML = "¿Que pokemon es?";
+    const { nombre, imagen } = pkmn;
+
+    const pregunta = {
+        win: pkmn.nombre,
+        winImg: pkmn.imagen,
+        lose1: pkmn2.nombre,
+        lose2: pkmn3.nombre,
+        lose3: pkmn4.nombre,
+    }
+
+    updatePkmn(pregunta.winImg, "hidden");
+    updateOpciones(pregunta)
+    const form = document.querySelector("#form-jugador");
+    //clear form event listeners
+    const newForm = form.cloneNode(true); //olvidaros de esto por ahora
+    form.parentNode.replaceChild(newForm, form); //y tambien de esto
     newForm.addEventListener("click", (e) => {
-        e.preventDeFault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
+        e.preventDefault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
         updatePkmn(pregunta.winImg, "show")
         const opcion = e.target.value; //capturo el valor del boton
-        console.log(opcion)
+        if(opcion == pregunta.win){ //condicion para ganar
+            document.querySelector('#mensaje').innerHTML = "Correcto!";
+            jugador.puntos++;
+            updateJugador()
+            setTimeout(() => {
+                nuevaPregunta()
+            }, 500);
+        }
+        else{ //condicion para fallar
+            document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+            jugador.fallos++;
+            jugador.vidas--;
+            if(jugador.vidas == 0){ //ha perdido
+                jugador.vidas = 0;
+                document.querySelector('#mensaje').innerHTML = "Game Over!";
+                document.querySelector('#form-jugador').innerHTML = "";
+                return //nos saca fuera de la funcion si el jugador ha perdido
+            }
+            updateJugador() //esto se ejecuta cuando el jugador ha fallado pero no ha perdido
+            setTimeout(() => {
+                nuevaPregunta()
+            }, 500);
+        }
     })
 }
 
-function updateOpciones(opciones) {
+const jugador = {
+    vidas: 3,
+    puntos: 0,
+    fallos: 0,
+}
+
+function updateJugador(){
+    const vidas = document.querySelector("#vidas");
+    const puntos = document.querySelector("#aciertos");
+    const fallos = document.querySelector("#fallos");
+
+    vidas.innerHTML = `<p>Vidas: ${jugador.vidas}</p>`
+    puntos.innerHTML = `<p>Puntos: ${jugador.puntos}</p>`
+    fallos.innerHTML = `<p>Fallos: ${jugador.fallos}</p>`
+}
+
+function updateOpciones(opciones){
     const opcion0 = document.querySelector("#opcion0");
     const opcion1 = document.querySelector("#opcion1");
     const opcion2 = document.querySelector("#opcion2");
@@ -65,30 +96,13 @@ function updateOpciones(opciones) {
     botones[1].value = opciones.lose1;
     botones[2].value = opciones.lose2;
     botones[3].value = opciones.lose3;
-    botones[4].value = opciones.lose4;
+
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    mi_peticion();
-
-    const obtenerPokemonBotones = document.querySelectorAll("#pkmon, #pkmon1, #pkmon2, #pkmon3");
-    Math.random() - 0.5
-
-    obtenerPokemonBotones.forEach(function (boton) {
-        boton.addEventListener("click", function () {
-            mi_peticion();
-        });
-    });
-});
-
-function mostrarNombrePokemon(nombrePokemon, nombrePokemon1, nombrePokemon2, nombrePokemon3) {
-    const btnObtenerPokemon = document.querySelector("#pkmon");
-    const btnObtenerPokemon1 = document.querySelector("#pkmon1");
-    const btnObtenerPokemon2 = document.querySelector("#pkmon2");
-    const btnObtenerPokemon3 = document.querySelector("#pkmon3");
-
-    btnObtenerPokemon.value = `${nombrePokemon}`;
-    btnObtenerPokemon1.value = `${nombrePokemon1}`;
-    btnObtenerPokemon2.value = `${nombrePokemon2}`;
-    btnObtenerPokemon3.value = `${nombrePokemon3}`;
+function updatePkmn(sprite, mode){
+    const img = document.querySelector("#pkmn-img");
+    img.innerHTML = `<img src="${sprite}" class="${mode}">`
 }
+
+updateJugador()
+nuevaPregunta()
