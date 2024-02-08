@@ -55,8 +55,66 @@ newForm.addEventListener("click", (e) => {
     e.preventDefault();
     updatePkmn(pregunta.imagenGanador,"show")
     const opcion1 = e.target.value;
-    console.log(opcion1)
+    if(opcion == pregunta.win){
+        document.querySelector('#mensaje').innerHTML = "Correcto!";
+        jugador.puntos++;
+        if(jugador.puntos % 5 === 0){
+            jugador.vidas++;
+        }
+        updateJugador()
+        setTimeout(() => {
+            nuevaPregunta()
+        }, 500);
+    }
+    else{
+        document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+        jugador.fallos++;
+        jugador.vidas--;
+        if(jugador.vidas == 0){
+            jugador.vidas = 0;
+            document.querySelector('#mensaje').innerHTML = "Game Over!";
+            document.querySelector('#form-jugador').innerHTML = "";
+            return
+        }
+        updateJugador()
+        setTimeout(() => {
+            nuevaPregunta()
+        }, 500);
+    }
 })
+
+
+const jugador = {
+vidas: 3,
+puntos: 0,
+fallos: 0,
+}
+
+function updateJugador(){
+const vidas = document.querySelector("#vidas");
+const puntos = document.querySelector("#aciertos");
+const fallos = document.querySelector("#fallos");
+
+vidas.innerHTML = `<p>Vidas: ${jugador.vidas}</p>`
+puntos.innerHTML = `<p>Puntos: ${jugador.puntos}</p>`
+fallos.innerHTML = `<p>Fallos: ${jugador.fallos}</p>`
+}
+
+function updateOpciones(opciones){
+const opcion0 = document.querySelector("#opcion0");
+const opcion1 = document.querySelector("#opcion1");
+const opcion2 = document.querySelector("#opcion2");
+const opcion3 = document.querySelector("#opcion3");
+
+const botones = [opcion0, opcion1, opcion2, opcion3];
+botones.sort(() => Math.random() - 0.5);
+
+botones[0].value = opciones.win;
+botones[1].value = opciones.lose1;
+botones[2].value = opciones.lose2;
+botones[3].value = opciones.lose3;
+
+}
 
 
 function updatePkmn(sprite, mode){
