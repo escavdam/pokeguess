@@ -35,34 +35,31 @@ async function nuevaPregunta(){
     updateOpciones(pregunta)
     const form = document.querySelector("#form-jugador");
     //clear form event listeners
-    const newForm = form.cloneNode(true);
-    form.parentNode.replaceChild(newForm, form);
+    const newForm = form.cloneNode(true); //olvidaros de esto por ahora
+    form.parentNode.replaceChild(newForm, form); //y tambien de esto
     newForm.addEventListener("click", (e) => {
-        e.preventDefault();
+        e.preventDefault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
         updatePkmn(pregunta.winImg, "show")
-        const opcion = e.target.value;
-        if(opcion == pregunta.win){
+        const opcion = e.target.value; //capturo el valor del boton
+        if(opcion == pregunta.win){ //condicion para ganar
             document.querySelector('#mensaje').innerHTML = "Correcto!";
             jugador.puntos++;
-            if(jugador.puntos % 5 === 0){
-                jugador.vidas++;
-            }
             updateJugador()
             setTimeout(() => {
                 nuevaPregunta()
             }, 500);
         }
-        else{
+        else{ //condicion para fallar
             document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
             jugador.fallos++;
             jugador.vidas--;
-            if(jugador.vidas == 0){
+            if(jugador.vidas == 0){ //ha perdido
                 jugador.vidas = 0;
                 document.querySelector('#mensaje').innerHTML = "Game Over!";
                 document.querySelector('#form-jugador').innerHTML = "";
-                return
+                return //nos saca fuera de la funcion si el jugador ha perdido
             }
-            updateJugador()
+            updateJugador() //esto se ejecuta cuando el jugador ha fallado pero no ha perdido
             setTimeout(() => {
                 nuevaPregunta()
             }, 500);
