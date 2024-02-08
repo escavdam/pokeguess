@@ -1,0 +1,73 @@
+async function getPkmn(randomPkmn) {
+    const max = 1008;
+    const id = Math.floor(Math.random() * max) + 1;
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const respuesta = await fetch(url);
+    const datos = await respuesta.json();
+
+    const { name, sprites } = datos;
+    const { front_default } = sprites;
+
+    const info = {
+        nombre: name,
+        imagen: front_default
+    };
+
+    return info;
+}
+
+async function nuevaPregunta(){
+    const pkmn0 = await getPkmn();
+    const pkmn1 = await getPkmn();
+    const pkmn2 = await getPkmn();
+    const pkmn3 = await getPkmn();
+    document.querySelector("#mensaje").innerHTML = "Who's that Pokemon?";
+    
+    const pregunta = {
+        win: pkmn0.nombre,
+        winImg: pkmn0.imagen,
+        lose1: pkmn1.nombre,
+        lose2: pkmn2.nombre,
+        lose3: pkmn3.nombre
+    };
+
+    updatePkmn(pregunta.winImg, "hidden");
+    updateOpciones(pregunta);
+
+    const form = document.querySelector("#form-jugador");
+
+    const newForm = form.cloneNode(true);
+
+    form.parentNode.replaceChild(newForm, form);
+
+    newForm.addEventListener("click", (e) => {
+        e.preventDefault();
+        updatePkmn(pregunta.winImg, "show");
+        const opcion = e.target.value;
+
+        console.log(opcion);
+    })
+    
+}
+
+function updateOpciones(opciones){
+    const opcion0 = document.querySelector("#opcion0");
+    const opcion1 = document.querySelector("#opcion1");
+    const opcion2 = document.querySelector("#opcion2");
+    const opcion3 = document.querySelector("#opcion3");
+
+    const botones = [opcion0, opcion1, opcion2, opcion3];
+    botones.sort(() => Math.random() - 0.5);
+
+    botones[0].value = opciones.win
+    botones[1].value = opciones.lose1
+    botones[2].value = opciones.lose2
+    botones[3].value = opciones.lose3
+}
+
+function updatePkmn(sprite, mode){
+    const contenedor = document.querySelector("#pokemon-img");
+    contenedor.innerHTML = `<img src="${sprite}" class="${mode}">`
+}
+
+nuevaPregunta();

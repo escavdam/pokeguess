@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.hidden{
+    filter: brightness(0);
+}
+
+.show{
+    filter: brightness(1);
+}
