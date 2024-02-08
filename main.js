@@ -37,12 +37,12 @@ function updatePkmn(sprite, mode) {
 }
 
 function updateOpciones(opciones) {
-    const opcion0 = document.querySelector("#opcion0");
-    const opcion1 = document.querySelector("#opcion1");
-    const opcion2 = document.querySelector("#opcion2");
-    const opcion3 = document.querySelector("#opcion3");
+    const nombre0 = document.querySelector("#nombre0");
+    const nombre1 = document.querySelector("#nombre1");
+    const nombre2 = document.querySelector("#nombre2");
+    const nombre3 = document.querySelector("#nombre3");
 
-    const botones = [opcion0, opcion1, opcion2, opcion3];
+    const botones = [nombre0, nombre1, nombre2, nombre3];
     botones.sort(() => Math.random() - 0.5);
 
     botones[0].value = opciones.win;
@@ -51,7 +51,8 @@ function updateOpciones(opciones) {
     botones[3].value = opciones.lose3;
 }
 
-async function nuevaPregunta() {
+
+async function mi_peticion() {
     const pkmn = await getPkmn();
     const pkmn2 = await getPkmn();
     const pkmn3 = await getPkmn();
@@ -82,7 +83,7 @@ async function nuevaPregunta() {
             jugador.puntos++;
             updateJugador()
             setTimeout(() => {
-                nuevaPregunta()
+                mi_peticion()
             }, 500);
         } else {
             document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
@@ -96,11 +97,11 @@ async function nuevaPregunta() {
             }
             updateJugador()
             setTimeout(() => {
-                nuevaPregunta()
+                mi_peticion()
             }, 500);
         }
     })
 }
 
 updateJugador()
-nuevaPregunta()
+mi_peticion()

@@ -24,6 +24,7 @@ main{
     justify-content: center;
     align-items: center;
     flex-direction: column;  
+    box-shadow: 0 0 10px;
 }
 #mensaje{
     margin: 2rem 0;
@@ -66,12 +67,12 @@ input[type="submit"] {
 
 .hidden{
     filter: brightness(0);
-    transition: 1s;
+
 }
 
 .show{
     filter: brightness(1);
-    transition: 1s;
+
 }
 
 #pkmn-img{
