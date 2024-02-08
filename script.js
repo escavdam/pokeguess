@@ -23,9 +23,11 @@ async function mi_peticion(){
     const {front_default} = pkmn.sprites
     const urlImagenFrontal = front_default
     
-    const imgPokemon = document.getElementById("imgPokemon");
-    imgPokemon.src = urlImagenFrontal;
-    imgPokemon.className = "hidden"
+    function UpdatePokemon(mode){
+        const imgPokemon = document.getElementById("imgPokemon");
+        imgPokemon.src = urlImagenFrontal;
+        imgPokemon.className = `${mode}`;
+    }
     
     //Accedo a la informacion de nombre de la API para que me cambie el nombre de pokemon en el botón
     //updateOpciones(pkmn.name);
@@ -37,7 +39,9 @@ async function mi_peticion(){
         lose2: pkmn2.name,
         lose3: pkmn3.name,
     }
+
     updateOpciones(pregunta);
+    UpdatePokemon("hidden");
     
     const form = document.querySelector("#form-jugador")
     
@@ -45,15 +49,49 @@ async function mi_peticion(){
     form.parentNode.replaceChild(newForm, form);
     newForm.addEventListener("click", (e) => {
         e.preventDefault();
-        const imgPokemon = document.getElementById("imgPokemon");
-        imgPokemon.src = pregunta.winImg;
-        imgPokemon.className = "show"
+        //const imgPokemon = document.getElementById("imgPokemon");
+        //imgPokemon.src = pregunta.winImg;
+        //imgPokemon.className = "show"
+        UpdatePokemon("show");
         const opcion = e.target.value;
-        console.log(opcion);
+        if(opcion == pregunta.win){
+            document.querySelector('#mensaje').innerHTML = "Correcto!";
+            jugador.aciertos++;
+            UpdateJugador();
+            setTimeout(() =>{
+                mi_peticion();
+            }, 500);
+        }else{
+            document.querySelector('#mensaje').innerHTML = "Incorrecto!";
+            jugador.vidas--;
+            jugador.fallos++;
+            UpdateJugador();
+
+            //Falta poner que pasa cuando llega a 0 vidas
+
+            setTimeout(() =>{
+                mi_peticion();
+            }, 500);
+        }
     })
     
 }
-mi_peticion()
+
+const jugador = {
+    vidas: 3,
+    aciertos: 0,
+    fallos: 0,
+}
+
+function UpdateJugador(){
+    const vidas = document.querySelector('#vidas')
+    const aciertos = document.querySelector('#aciertos')
+    const fallos = document.querySelector('#fallos')
+
+    vidas.innerHTML = `<p>Vidas: ${jugador.vidas}</p>`
+    aciertos.innerHTML = `<p>Aciertos: ${jugador.aciertos}</p>`
+    fallos.innerHTML = `<p>Fallos: ${jugador.fallos}</p>`
+}
 
 
 function updateOpciones(opciones) {
@@ -73,7 +111,8 @@ function updateOpciones(opciones) {
     btnObtenerPokemon3.value = opciones.lose3;
 }
 
-
+UpdateJugador();
+mi_peticion();
 
 function generarNumeroAleatorio(){
     return Math.floor(Math.random() * 200) + 1;
