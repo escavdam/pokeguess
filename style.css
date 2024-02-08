@@ -1,0 +1,13 @@
+.hidden{
+    filter: brightness(0);
+}
+
+.show{
+    filter: brightness(1);
+}
+
+
+#pkmn-img{
+    width: 200px;
+    height: 200px;
+}
