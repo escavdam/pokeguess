@@ -96,7 +96,6 @@ function updateOpciones(opciones){
     botones[1].value = opciones.lose1;
     botones[2].value = opciones.lose2;
     botones[3].value = opciones.lose3;
-
 }
 
 function updatePkmn(sprite, mode){
@@ -106,4 +105,3 @@ function updatePkmn(sprite, mode){
 
 updateJugador()
 nuevaPregunta()
-
