@@ -31,57 +31,57 @@ async function mi_peticion(){
     console.log(pkmn.front_default)
     updateOpciones(pregunta)
     
+    function updateOpciones(opciones){
+        const opcion1 = document.querySelector("#opcion1")
+        const opcion2 = document.querySelector("#opcion2")
+        const opcion3 = document.querySelector("#opcion3")
+        const opcion4 = document.querySelector("#opcion4")
+        
+        const botones = [opcion1, opcion2, opcion3, opcion4];
+        botones.sort(() => Math.random() -0.5);
+        //randomizar mi array de botones
+        botones[0].value = opciones.ganador;
+        botones[1].value = opciones.perdedor1;
+        botones[2].value = opciones.perdedor2;
+        botones[3].value = opciones.perdedor3;
+    }
+    const form = document.querySelector("#form-jugador");
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    newForm.addEventListener("click", (e) => {
+        e.preventDefault();
+        updatePkmn(pregunta.imagenGanador,"show")
+        const opcion1 = e.target.value;
+        if(opciones == pregunta.win){
+            document.querySelector('#mensaje').innerHTML = "Correcto!";
+            jugador.puntos++;
+            if(jugador.puntos % 5 === 0){
+                jugador.vidas++;
+            }
+            updateJugador()
+            setTimeout(() => {
+                nuevaPregunta()
+            }, 500);
+        }
+        else{
+            document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+            jugador.fallos++;
+            jugador.vidas--;
+            if(jugador.vidas == 0){
+                jugador.vidas = 0;
+                document.querySelector('#mensaje').innerHTML = "Game Over!";
+                document.querySelector('#form-jugador').innerHTML = "";
+                return
+            }
+            updateJugador()
+            setTimeout(() => {
+                nuevaPregunta()
+            }, 500);
+        }
+    })
     
 }
 
-function updateOpciones(opciones){
-    const opcion1 = document.querySelector("#opcion1")
-    const opcion2 = document.querySelector("#opcion2")
-    const opcion3 = document.querySelector("#opcion3")
-    const opcion4 = document.querySelector("#opcion4")
-    
-    const botones = [opcion1, opcion2, opcion3, opcion4];
-    botones.sort(() => Math.random() -0.5);
-    //randomizar mi array de botones
-    botones[0].value = opciones.ganador;
-    botones[1].value = opciones.perdedor1;
-    botones[2].value = opciones.perdedor2;
-    botones[3].value = opciones.perdedor3;
-}
-const form = document.querySelector("#form-jugador");
-const newForm = form.cloneNode(true);
-form.parentNode.replaceChild(newForm, form);
-newForm.addEventListener("click", (e) => {
-    e.preventDefault();
-    updatePkmn(pregunta.imagenGanador,"show")
-    const opcion1 = e.target.value;
-    if(opcion == pregunta.win){
-        document.querySelector('#mensaje').innerHTML = "Correcto!";
-        jugador.puntos++;
-        if(jugador.puntos % 5 === 0){
-            jugador.vidas++;
-        }
-        updateJugador()
-        setTimeout(() => {
-            nuevaPregunta()
-        }, 500);
-    }
-    else{
-        document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
-        jugador.fallos++;
-        jugador.vidas--;
-        if(jugador.vidas == 0){
-            jugador.vidas = 0;
-            document.querySelector('#mensaje').innerHTML = "Game Over!";
-            document.querySelector('#form-jugador').innerHTML = "";
-            return
-        }
-        updateJugador()
-        setTimeout(() => {
-            nuevaPregunta()
-        }, 500);
-    }
-})
 
 
 const jugador = {
@@ -100,21 +100,10 @@ puntos.innerHTML = `<p>Puntos: ${jugador.puntos}</p>`
 fallos.innerHTML = `<p>Fallos: ${jugador.fallos}</p>`
 }
 
-function updateOpciones(opciones){
-const opcion0 = document.querySelector("#opcion0");
-const opcion1 = document.querySelector("#opcion1");
-const opcion2 = document.querySelector("#opcion2");
-const opcion3 = document.querySelector("#opcion3");
 
-const botones = [opcion0, opcion1, opcion2, opcion3];
-botones.sort(() => Math.random() - 0.5);
 
-botones[0].value = opciones.win;
-botones[1].value = opciones.lose1;
-botones[2].value = opciones.lose2;
-botones[3].value = opciones.lose3;
 
-}
+
 
 
 function updatePkmn(sprite, mode){
