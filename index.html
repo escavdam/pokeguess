@@ -3,25 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokeguess</title>
     <link rel="stylesheet" href="style.css">
-    <title>PokeGuess</title>
 </head>
 <body>
-    <div class="title">
-        <h1>PokeGuess</h1>
-    </div>
-    <h2 class="pregunta">¿Cual es este pokemon?</h2>
-    <section class="container section1">
-        <div class="hidden " id="imagenDesenfocada">
-            <img id="imgPokemon" src="">
-        </div>
-        <div class="grid">
-            <input type="submit" id="pkmon">
-            <input type="submit" id="pkmon1">
-            <input type="submit" id="pkmon2">
-            <input type="submit" id="pkmon3">
-        </div>
-    </section>
+    <h1>Pokeguess</h1>
+    <main>
+
+        <section id="player">
+            <div id="lifes"></div>
+            <div id="aciertos"></div>
+            <div id="fallos"></div>
+        </section>
+        
+        <section id="pkmn">
+            <div id="pkmn-img" class="center"></div>
+            <div id="pkmn-pregunta">
+            </div>
+        </section>
+        <section id="ui-juego">
+            <h2 id="mensaje">¿Que pokemon es?</h2>
+            <form id="form-jugador">
+                <input type="submit" id="opcion0" value="a">
+                <input type="submit" id="opcion1" value="b">
+                <input type="submit" id="opcion2" value="c">
+                <input type="submit" id="opcion3" value="d">
+            </form>
+        </section>
+    </main>
     <script src="main.js"></script>
 </body>
 </html>
