@@ -73,6 +73,7 @@ input[type="submit"]:hover{
 }
 
 .show{
+    transition: 1s;
     filter: brightness(1);
 }
 

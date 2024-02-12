@@ -37,14 +37,17 @@ async function nuevaPregunta(){
         lose3: pkmn4.nombre,
     }
     
-    updatePkmn(pregunta.winImg, "hidden");
+    updatePkmn(pregunta.winImg);
+    hiddenPokemon();
+
     updateOpciones(pregunta)
     const form = nuevoFormulario()
     form.addEventListener("click", (e) => {
         e.preventDefault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
         desactivaBotones();
         const opcion = e.target.value; //capturo el valor del boton
-        updatePkmn(pregunta.winImg, "show")
+        updatePkmn(pregunta.winImg)
+        showPokemon();
         setTimeout(compruebaRespuesta(opcion, pregunta), 2000);
         
     })
@@ -129,10 +132,16 @@ function updateOpciones(opciones){
     activaBotones();
 }
 
-function updatePkmn(sprite, mode){
-    const img = document.querySelector("#pkmn-img");
-    img.innerHTML = `<img src="${sprite}" class="${mode}">`
+function updatePkmn(sprite){
+    document.querySelector("#sprite").src = sprite
 }
 
+function showPokemon(){
+    document.querySelector("#sprite").className = "show"
+}
+
+function hiddenPokemon(){
+    document.querySelector("#sprite").className = "hidden"
+}
 updateJugador()
 nuevaPregunta()
