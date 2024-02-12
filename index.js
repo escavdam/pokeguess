@@ -1,3 +1,9 @@
+const jugador = {
+    vidas: 3,
+    puntos: 0,
+    fallos: 0,
+}
+
 async function getPkmn() {
     const id = Math.floor(Math.random() * 751) + 1;
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
@@ -15,14 +21,14 @@ async function getPkmn() {
     return info;
 }
 
-async function nuevaPregunta(){
+async function nuevaPregunta(){ 
     const pkmn = await getPkmn();
     const pkmn2 = await getPkmn();
     const pkmn3 = await getPkmn();
     const pkmn4 = await getPkmn();
+    
     document.querySelector('#mensaje').innerHTML = "¿Que pokemon es?";
-    const { nombre, imagen } = pkmn;
-
+    
     const pregunta = {
         win: pkmn.nombre,
         winImg: pkmn.imagen,
@@ -30,47 +36,70 @@ async function nuevaPregunta(){
         lose2: pkmn3.nombre,
         lose3: pkmn4.nombre,
     }
-
+    
     updatePkmn(pregunta.winImg, "hidden");
     updateOpciones(pregunta)
-    const form = document.querySelector("#form-jugador");
-    //clear form event listeners
-    const newForm = form.cloneNode(true); //olvidaros de esto por ahora
-    form.parentNode.replaceChild(newForm, form); //y tambien de esto
-    newForm.addEventListener("click", (e) => {
+    const form = nuevoFormulario()
+    form.addEventListener("click", (e) => {
         e.preventDefault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
-        updatePkmn(pregunta.winImg, "show")
+        desactivaBotones();
         const opcion = e.target.value; //capturo el valor del boton
-        if(opcion == pregunta.win){ //condicion para ganar
-            document.querySelector('#mensaje').innerHTML = "Correcto!";
-            jugador.puntos++;
-            updateJugador()
-            setTimeout(() => {
-                nuevaPregunta()
-            }, 500);
-        }
-        else{ //condicion para fallar
-            document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
-            jugador.fallos++;
-            jugador.vidas--;
-            if(jugador.vidas == 0){ //ha perdido
-                jugador.vidas = 0;
-                document.querySelector('#mensaje').innerHTML = "Game Over!";
-                document.querySelector('#form-jugador').innerHTML = "";
-                return //nos saca fuera de la funcion si el jugador ha perdido
-            }
-            updateJugador() //esto se ejecuta cuando el jugador ha fallado pero no ha perdido
-            setTimeout(() => {
-                nuevaPregunta()
-            }, 500);
-        }
+        updatePkmn(pregunta.winImg, "show")
+        setTimeout(compruebaRespuesta(opcion, pregunta), 2000);
+        
     })
 }
 
-const jugador = {
-    vidas: 3,
-    puntos: 0,
-    fallos: 0,
+function nuevoFormulario(){
+    const form = document.querySelector("#form-jugador");
+    const newForm = form.cloneNode(true); //copiamos el contenido del formulario sin el evento
+    form.parentNode.replaceChild(newForm, form); //sustituimos el contenido del formulario anterior por el nuevo
+    return newForm
+}
+
+function compruebaRespuesta(opcion, pregunta){
+    
+    if(opcion == pregunta.win){ //condicion para ganar
+        document.querySelector('#mensaje').innerHTML = "Correcto!";
+        jugador.puntos++;
+        updateJugador()
+        nuevaPregunta()
+    }
+    else{ //condicion para fallar
+        document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+        jugador.fallos++;
+        jugador.vidas--;
+        if(jugador.vidas == 0){ //ha perdido
+            jugador.vidas = 0;
+            document.querySelector('#mensaje').innerHTML = "Game Over!";
+            document.querySelector('#form-jugador').innerHTML = "";
+            return //nos saca fuera de la funcion si el jugador ha perdido
+        }
+        updateJugador() //esto se ejecuta cuando el jugador ha fallado pero no ha perdido
+        nuevaPregunta()
+    }
+}
+
+function desactivaBotones(){
+    document.querySelector("#opcion0").disabled = true;
+    document.querySelector("#opcion1").disabled = true;
+    document.querySelector("#opcion2").disabled = true;
+    document.querySelector("#opcion3").disabled = true;
+}
+
+function activaBotones(){
+    document.querySelector("#opcion0").disabled = false;
+    document.querySelector("#opcion1").disabled = false;
+    document.querySelector("#opcion2").disabled = false;
+    document.querySelector("#opcion3").disabled = false;
+
+}
+
+function muestraBotones(){
+    document.querySelector("#opcion0").hidden = false;
+    document.querySelector("#opcion1").hidden = false;
+    document.querySelector("#opcion2").hidden = false;
+    document.querySelector("#opcion3").hidden = false;
 }
 
 function updateJugador(){
@@ -96,7 +125,8 @@ function updateOpciones(opciones){
     botones[1].value = opciones.lose1;
     botones[2].value = opciones.lose2;
     botones[3].value = opciones.lose3;
-
+    muestraBotones();
+    activaBotones();
 }
 
 function updatePkmn(sprite, mode){
