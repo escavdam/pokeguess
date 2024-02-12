@@ -27,6 +27,8 @@ async function nuevaPregunta(){
     const pkmn3 = await getPkmn();
     const pkmn4 = await getPkmn();
     
+    document.querySelector('main').style.border = "8px solid #666"
+    document.querySelector('main').style.background = "gray"
     document.querySelector('#mensaje').innerHTML = "¿Que pokemon es?";
     
     const pregunta = {
@@ -39,17 +41,14 @@ async function nuevaPregunta(){
     
     updatePkmn(pregunta.winImg);
     hiddenPokemon();
-
     updateOpciones(pregunta)
     const form = nuevoFormulario()
     form.addEventListener("click", (e) => {
-        e.preventDefault(); //previene comportamientos predefinidos, en este caso, mandar el formulario automaticamente
+        e.preventDefault(); //previene comportamientos predefinidos
         desactivaBotones();
         const opcion = e.target.value; //capturo el valor del boton
         updatePkmn(pregunta.winImg)
-        showPokemon();
-        setTimeout(compruebaRespuesta(opcion, pregunta), 2000);
-        
+        compruebaRespuesta(opcion, pregunta);
     })
 }
 
@@ -62,24 +61,30 @@ function nuevoFormulario(){
 
 function compruebaRespuesta(opcion, pregunta){
     
+    showPokemon();
     if(opcion == pregunta.win){ //condicion para ganar
         document.querySelector('#mensaje').innerHTML = "Correcto!";
+        document.querySelector('main').style.border = "8px solid green"
+        document.querySelector('main').style.background = "#363"
         jugador.puntos++;
         updateJugador()
-        nuevaPregunta()
+        setTimeout(() => nuevaPregunta(), 3000)
     }
     else{ //condicion para fallar
         document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
         jugador.fallos++;
         jugador.vidas--;
+        document.querySelector('main').style.border = "8px solid red"
+        document.querySelector('main').style.background = "#633"
+
         if(jugador.vidas == 0){ //ha perdido
             jugador.vidas = 0;
             document.querySelector('#mensaje').innerHTML = "Game Over!";
-            document.querySelector('#form-jugador').innerHTML = "";
+            desactivaBotones();
             return //nos saca fuera de la funcion si el jugador ha perdido
         }
         updateJugador() //esto se ejecuta cuando el jugador ha fallado pero no ha perdido
-        nuevaPregunta()
+        setTimeout(() => nuevaPregunta(), 3000)
     }
 }
 
@@ -143,5 +148,6 @@ function showPokemon(){
 function hiddenPokemon(){
     document.querySelector("#sprite").className = "hidden"
 }
+
 updateJugador()
 nuevaPregunta()
