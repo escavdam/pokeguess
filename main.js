@@ -32,22 +32,23 @@ async function nuevaPregunta(){
     };
 
     updatePkmn(pregunta.winImg, "hidden");
+    hiddenPokemon();
     updateOpciones(pregunta);
-
-    const form = document.querySelector("#form-jugador");
-
-    const newForm = form.cloneNode(true);
-
-    form.parentNode.replaceChild(newForm, form);
-
-    newForm.addEventListener("click", (e) => {
+    const form = nuevoFormulario();
+    form.addEventListener("click", (e) => {
         e.preventDefault();
-        updatePkmn(pregunta.winImg, "show");
         const opcion = e.target.value;
-
-        console.log(opcion);
+        updatePkmn(pregunta.winImg, "show");
+        compruebaRespuesta(opcion, pregunta);
     })
     
+}
+
+function nuevoFormulario(){
+    const form = document.querySelector("#form-jugador");
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    return newForm;
 }
 
 function updateOpciones(opciones){
@@ -68,6 +69,18 @@ function updateOpciones(opciones){
 function updatePkmn(sprite, mode){
     const contenedor = document.querySelector("#pokemon-img");
     contenedor.innerHTML = `<img src="${sprite}" class="${mode}">`
+}
+
+function updatePkmn(sprite){
+    document.querySelector("#sprite").src = sprite
+}
+
+function showPokemon(){
+    document.querySelector("#sprite").className = "show"
+}
+
+function hiddenPokemon(){
+    document.querySelector("#sprite").className = "hidden"
 }
 
 nuevaPregunta();
