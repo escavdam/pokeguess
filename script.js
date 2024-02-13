@@ -20,6 +20,8 @@ async function mi_peticion(){
     const pkmn2 = await getPkmn(numeroAleatorio2);
     const pkmn3 = await getPkmn(numeroAleatorio3);
     
+    document.querySelector('#mensaje').innerHTML = "¿Que pokemon es?";
+
     const {front_default} = pkmn.sprites
     const urlImagenFrontal = front_default
     
@@ -40,20 +42,21 @@ async function mi_peticion(){
         lose3: pkmn3.name,
     }
 
-    updateOpciones(pregunta);
     UpdatePokemon("hidden");
+    updateOpciones(pregunta);
     
     const form = document.querySelector("#form-jugador")
     
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
     newForm.addEventListener("click", (e) => {
+
         e.preventDefault();
-        //const imgPokemon = document.getElementById("imgPokemon");
-        //imgPokemon.src = pregunta.winImg;
-        //imgPokemon.className = "show"
+        desactivaBotones();
         UpdatePokemon("show");
+
         const opcion = e.target.value;
+
         if(opcion == pregunta.win){
             document.querySelector('#mensaje').innerHTML = "Correcto!";
             jugador.aciertos++;
@@ -77,6 +80,28 @@ async function mi_peticion(){
     
 }
 
+function desactivaBotones(){
+    document.querySelector("#btnObtenerPokemon").disabled = true;
+    document.querySelector("#btnObtenerPokemon1").disabled = true;
+    document.querySelector("#btnObtenerPokemon2").disabled = true;
+    document.querySelector("#btnObtenerPokemon3").disabled = true;
+}
+
+function activaBotones(){
+    document.querySelector("#btnObtenerPokemon").disabled = false;
+    document.querySelector("#btnObtenerPokemon1").disabled = false;
+    document.querySelector("#btnObtenerPokemon2").disabled = false;
+    document.querySelector("#btnObtenerPokemon3").disabled = false;
+
+}
+
+function muestraBotones(){
+    document.querySelector("#btnObtenerPokemon").hidden = false;
+    document.querySelector("#btnObtenerPokemon1").hidden = false;
+    document.querySelector("#btnObtenerPokemon2").hidden = false;
+    document.querySelector("#btnObtenerPokemon3").hidden = false;
+}
+
 const jugador = {
     vidas: 3,
     aciertos: 0,
@@ -96,6 +121,7 @@ function UpdateJugador(){
 
 function updateOpciones(opciones) {
     //Modifico la información del botón del HTML
+
     const btnObtenerPokemon = document.getElementById("btnObtenerPokemon");
     const btnObtenerPokemon1 = document.getElementById("btnObtenerPokemon1");
     const btnObtenerPokemon2 = document.getElementById("btnObtenerPokemon2");
@@ -103,12 +129,16 @@ function updateOpciones(opciones) {
     
     const buttons = [btnObtenerPokemon, btnObtenerPokemon1, 
     btnObtenerPokemon2, btnObtenerPokemon3];
+    console.log(buttons)
     buttons.sort(() => Math.random() - 0.5);
+    console.log(buttons)
 
-    btnObtenerPokemon.value = opciones.win;
-    btnObtenerPokemon1.value = opciones.lose1;
-    btnObtenerPokemon2.value = opciones.lose2;
-    btnObtenerPokemon3.value = opciones.lose3;
+    buttons[0].value = opciones.win;
+    buttons[1].value = opciones.lose1;
+    buttons[2].value = opciones.lose2;
+    buttons[3].value = opciones.lose3;
+
+    activaBotones();
 }
 
 UpdateJugador();
@@ -118,7 +148,7 @@ function generarNumeroAleatorio(){
     return Math.floor(Math.random() * 200) + 1;
 }
 
-const btnObtenerPokemon = document.getElementById("btnObtenerPokemon");
+//const btnObtenerPokemon = document.getElementById("btnObtenerPokemon");
 
 //Agregar un event listener para ejecutar mi_peticion al hacer click en el botón
 //btnObtenerPokemon.addEventListener("click", mi_peticion);
