@@ -51,6 +51,29 @@ function nuevoFormulario(){
     return newForm;
 }
 
+function compruebaRespuesta(){
+    showPokemon();
+    if(opcion == pregunta.win){
+        document.querySelector('#mensaje').innerHTML = "Correcto!";
+        jugador.puntos++;
+        updateJugador();
+        setTimeout(() => nuevaPregunta(), 3000);
+    } else {
+        document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+        jugador.fallos++;
+        jugador.vidas--;
+
+        if(jugador.vidas == 0){
+            jugador.vidas = 0;
+            document.querySelector('#mensaje').innerHTML = "Game Over!";
+            desactivaBotones();
+            return;
+        }
+        updateJugador();
+        setTimeout(() => nuevaPregunta(), 3000);
+    }
+}
+
 function updateOpciones(opciones){
     const opcion0 = document.querySelector("#opcion0");
     const opcion1 = document.querySelector("#opcion1");
@@ -64,11 +87,6 @@ function updateOpciones(opciones){
     botones[1].value = opciones.lose1
     botones[2].value = opciones.lose2
     botones[3].value = opciones.lose3
-}
-
-function updatePkmn(sprite, mode){
-    const contenedor = document.querySelector("#pokemon-img");
-    contenedor.innerHTML = `<img src="${sprite}" class="${mode}">`
 }
 
 function updatePkmn(sprite){
