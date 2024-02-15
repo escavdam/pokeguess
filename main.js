@@ -37,6 +37,7 @@ async function nuevaPregunta(){
     const form = nuevoFormulario();
     form.addEventListener("click", (e) => {
         e.preventDefault();
+        desactivaBotones();
         const opcion = e.target.value;
         updatePkmn(pregunta.winImg, "show");
         compruebaRespuesta(opcion, pregunta);
@@ -72,6 +73,13 @@ function compruebaRespuesta(){
         updateJugador();
         setTimeout(() => nuevaPregunta(), 3000);
     }
+}
+
+function desactivaBotones(){
+    document.querySelector("#opcion0").disabled = true;
+    document.querySelector("#opcion1").disabled = true;
+    document.querySelector("#opcion2").disabled = true;
+    document.querySelector("#opcion3").disabled = true;
 }
 
 function updateOpciones(opciones){
