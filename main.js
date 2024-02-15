@@ -4,7 +4,7 @@ const jugador = {
     fallos: 0,
 }
 
-async function getPkmn(randomPkmn) {
+async function getPkmn() {
     const id = Math.floor(Math.random() * 1008) + 1;
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const respuesta = await fetch(url);
