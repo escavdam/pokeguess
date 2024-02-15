@@ -28,7 +28,6 @@ async function mi_peticion(){
     }
     //const nombres = document.querySelector("")
     updatePkmn(pkmn.sprites.front_default, "hidden")
-    console.log(pkmn.front_default)
     updateOpciones(pregunta)
     
     const form = document.querySelector("#form-jugador");
@@ -52,13 +51,15 @@ async function mi_peticion(){
         else{
             document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.ganador}!`;
             jugador.fallos++;
-            jugador.vidas--;
+            jugador.vidas --;
             if(jugador.vidas == 0){
                 jugador.vidas = 0;
                 document.querySelector('#mensaje').innerHTML = "Game Over!";
                 document.querySelector('#form-jugador').innerHTML = "";
                 return
             }
+            console.log(jugador.vidas)
+            console.log(jugador.fallos)
             updateJugador()
             setTimeout(() => {
                 mi_peticion()
@@ -85,7 +86,7 @@ function updateOpciones(opciones){
 
 
 const jugador = {
-vidas: 3,
+vidas: 4,
 puntos: 0,
 fallos: 0,
 }
