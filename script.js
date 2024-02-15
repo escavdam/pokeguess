@@ -76,6 +76,13 @@ async function mi_peticion(){
                 mi_peticion();
             }, 500);
         }
+
+        if(jugador.vidas === 0){
+            jugador.vidas = 0;
+            document.querySelector('#mensaje').innerHTML = "Game Over!";
+            desactivaBotones();
+            return;
+        }
     })
     
 }
