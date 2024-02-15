@@ -82,6 +82,13 @@ function desactivaBotones(){
     document.querySelector("#opcion3").disabled = true;
 }
 
+function activaBotones(){
+    document.querySelector("#opcion0").disabled = false;
+    document.querySelector("#opcion1").disabled = false;
+    document.querySelector("#opcion2").disabled = false;
+    document.querySelector("#opcion3").disabled = false;
+}
+
 function updateOpciones(opciones){
     const opcion0 = document.querySelector("#opcion0");
     const opcion1 = document.querySelector("#opcion1");
