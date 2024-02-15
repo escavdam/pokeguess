@@ -46,7 +46,7 @@ async function mi_peticion(){
             }
             updateJugador()
             setTimeout(() => {
-                nuevaPregunta()
+                mi_peticion()
             }, 500);
         }
         else{
@@ -61,7 +61,7 @@ async function mi_peticion(){
             }
             updateJugador()
             setTimeout(() => {
-                nuevaPregunta()
+                mi_peticion()
             }, 500);
         }
     })
