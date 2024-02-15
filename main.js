@@ -96,6 +96,16 @@ function muestraBotones(){
     document.querySelector("#opcion3").hidden = false;
 }
 
+function updateJugador(){
+    const vidas = document.querySelector("#vidas");
+    const puntos = document.querySelector("#aciertos");
+    const fallos = document.querySelector("#fallos");
+
+    vidas.innerHTML = `Vidas: ${jugador.vidas}`
+    puntos.innerHTML = `Puntos: ${jugador.puntos}`
+    fallos.innerHTML = `Fallos: ${jugador.fallos}`
+}
+
 function updateOpciones(opciones){
     const opcion0 = document.querySelector("#opcion0");
     const opcion1 = document.querySelector("#opcion1");
