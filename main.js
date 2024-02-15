@@ -54,6 +54,7 @@ async function mi_peticion(){
             jugador.vidas --;
             if(jugador.vidas == 0){
                 jugador.vidas = 0;
+                updateJugador();
                 document.querySelector('#mensaje').innerHTML = "Game Over!";
                 document.querySelector('#form-jugador').innerHTML = "";
                 return
