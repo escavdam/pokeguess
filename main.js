@@ -38,7 +38,7 @@ async function mi_peticion(){
         e.preventDefault();
         updatePkmn(pregunta.imagenGanador,"show")
         const opcion = e.target.value;
-        if(opcion == pregunta.win){
+        if(opcion == pregunta.ganador){
             document.querySelector('#mensaje').innerHTML = "Correcto!";
             jugador.puntos++;
             if(jugador.puntos % 5 === 0){
@@ -50,7 +50,7 @@ async function mi_peticion(){
             }, 500);
         }
         else{
-            document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.win}!`;
+            document.querySelector('#mensaje').innerHTML = `Incorrecto! El pokemon era ${pregunta.ganador}!`;
             jugador.fallos++;
             jugador.vidas--;
             if(jugador.vidas == 0){
@@ -95,9 +95,9 @@ const vidas = document.querySelector("#vidas");
 const puntos = document.querySelector("#aciertos");
 const fallos = document.querySelector("#fallos");
 
-vidas.innerHTML = `<p>Vidas: ${jugador.vidas}</p>`
-puntos.innerHTML = `<p>Puntos: ${jugador.puntos}</p>`
-fallos.innerHTML = `<p>Fallos: ${jugador.fallos}</p>`
+vidas.innerHTML = `Vidas: ${jugador.vidas}`
+puntos.innerHTML = `Puntos: ${jugador.puntos}`
+fallos.innerHTML = `Fallos: ${jugador.fallos}`
 }
 
 
@@ -111,5 +111,5 @@ function updatePkmn(sprite, mode){
     contenedor.innerHTML = `<img src="${sprite}" class="${mode}">`
 }
 
-
+updateJugador()
 mi_peticion()
