@@ -52,7 +52,6 @@ async function mi_peticion(){
     newForm.addEventListener("click", (e) => {
 
         e.preventDefault();
-        desactivaBotones();
         UpdatePokemon("show");
 
         const opcion = e.target.value;
@@ -71,18 +70,18 @@ async function mi_peticion(){
             UpdateJugador();
 
             //Falta poner que pasa cuando llega a 0 vidas
+            if(jugador.vidas === 0){
+                jugador.vidas = 0;
+                document.querySelector('#mensaje').innerHTML = "Game Over!";
+                desactivaBotones();
+                return;
+            }
 
             setTimeout(() =>{
                 mi_peticion();
             }, 500);
         }
 
-        if(jugador.vidas === 0){
-            jugador.vidas = 0;
-            document.querySelector('#mensaje').innerHTML = "Game Over!";
-            desactivaBotones();
-            return;
-        }
     })
     
 }
@@ -92,6 +91,10 @@ function desactivaBotones(){
     document.querySelector("#btnObtenerPokemon1").disabled = true;
     document.querySelector("#btnObtenerPokemon2").disabled = true;
     document.querySelector("#btnObtenerPokemon3").disabled = true;
+    document.querySelector("#btnObtenerPokemon").hidden = true;
+    document.querySelector("#btnObtenerPokemon1").hidden = true;
+    document.querySelector("#btnObtenerPokemon2").hidden = true;
+    document.querySelector("#btnObtenerPokemon3").hidden = true;
 }
 
 function activaBotones(){
