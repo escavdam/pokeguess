@@ -36,7 +36,7 @@ async function nuevaPregunta(){
         lose3: pkmn3.nombre
     };
 
-    updatePkmn(pregunta.winImg, "hidden");
+    updatePkmn(pregunta.winImg);
     hiddenPokemon();
     updateOpciones(pregunta);
     const form = nuevoFormulario();
