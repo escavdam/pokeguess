@@ -133,4 +133,5 @@ function hiddenPokemon(){
     document.querySelector("#sprite").className = "hidden"
 }
 
+updateJugador();
 nuevaPregunta();
